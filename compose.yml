@@ -1,0 +1,76 @@
+services:
+  prometheus:
+    container_name: prometheus
+    hostname: prometheus
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+  mssql:
+    container_name: mssql2022
+    hostname: mssql2022
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    env_file:
+      .env
+    ports:
+      - 1433:1433
+    networks:
+      - monitoring
+  mssql_exporter:
+    container_name: mssql_exporter
+    hostname: mssql_exporter
+    image: awaragi/prometheus-mssql-exporter
+    ports:
+      - 4000:4000
+    env_file:
+      - .env
+    networks:
+      - monitoring
+  pizza-shop:
+    container_name: pizza-shop
+    hostname: pizza-shop
+    build:
+      context: ./pizzaShop
+    ports:
+      - 8080:8080
+    env_file: 
+      - .env
+    networks:
+      - monitoring
+
+  mongodb: 
+    container_name: mongodb
+    hostname: mongodb
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - monitoring
+  mongodb_exporter:
+    container_name: mongodb_exporter
+    hostname: mongodb_exporter
+    image: percona/mongodb_exporter:0.49.0
+    ports:
+      - 9216:9216
+    networks:
+      - monitoring
+    command:
+      - '--mongodb.uri=mongodb://mongodb:27017'
+
+  node_orders:
+    container_name: node_orders
+    hostname: node_orders
+    build:
+      context: ./orderApi
+    env_file: .env
+    ports:
+      - 3000:3000
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+

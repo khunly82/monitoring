@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+scrape_configs:
+  # scrapping des données de prometheus lui-même
+  - job_name: scrap_prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: scrap_windows
+    static_configs:
+      - targets: ['host.docker.internal:9182']
+  - job_name: scrap_mssql
+    static_configs:
+      - targets: ['mssql_exporter:4000']
+  - job_name: scrap_asp_pizzashop
+    static_configs:
+      - targets: ['pizza-shop:8080']
+  - job_name: scrap_mongo
+    static_configs:
+      - targets: ['mongodb_exporter:9216']
+  - job_name: scrap_node
+    static_configs:
+      - targets: ['node_orders:3000']
+
+  
