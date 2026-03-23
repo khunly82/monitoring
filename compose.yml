@@ -138,4 +138,5 @@ services:
 
 networks:
   monitoring:
+  new branch:configs:
   
