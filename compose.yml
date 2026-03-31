@@ -142,4 +142,4 @@ services:
 
 networks:
   monitoring:
-
+ 
